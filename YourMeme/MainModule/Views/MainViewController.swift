@@ -30,6 +30,9 @@ final class MainViewController: UIViewController {
         setNavigationBar()
         loadingFont()
         addKeyboardObservers()
+    }
+    
+    deinit {
         removeKeyboardObservers()
     }
     
