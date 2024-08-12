@@ -6,11 +6,11 @@ import UIKit
 
 extension UITextField {
     
-    convenience init(placeholder: String, textAlignment: NSTextAlignment = .natural) {
+    convenience init(placeholder: String) {
         self.init()
         
         self.placeholder = placeholder
-        self.textAlignment = textAlignment
+        self.textAlignment = .center
         self.borderStyle = .roundedRect
         self.tintColor = .black
         self.autocorrectionType = .no

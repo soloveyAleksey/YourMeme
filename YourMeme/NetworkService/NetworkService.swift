@@ -5,8 +5,8 @@
 import Foundation
 
 protocol NetworkServiceProtocol: AnyObject {
-    func downloadList(from url: String, completion: @escaping (Result<[String], NetworkError>) -> ())
-    func downloadImage(from url: String, completion: @escaping (Result<Data, NetworkError>) -> Void)
+    func downloadList(from url: String, completion: @escaping (Result<ListModel, NetworkError>) -> ())
+    func downloadImage(from url: String, completion: @escaping (Result<ImageModel, NetworkError>) -> ())
 }
 
 final class NetworkService: NetworkServiceProtocol {
@@ -17,7 +17,7 @@ final class NetworkService: NetworkServiceProtocol {
         "x-rapidapi-key": "593d858ec7msh44787ba9e3aa6aep106925jsne707a7a50200"
     ]
     
-    func downloadList(from url: String, completion: @escaping (Result<[String], NetworkError>) -> ()) {
+    func downloadList(from url: String, completion: @escaping (Result<ListModel, NetworkError>) -> ()) {
         guard let url = URL(string: url) else { return catchFailure(with: .invalidURL) }
         
         var request = URLRequest(url: url)
@@ -35,8 +35,8 @@ final class NetworkService: NetworkServiceProtocol {
             do {
                 let listData = try JSONSerialization.jsonObject(with: data, options: []) as? [String]
                 DispatchQueue.main.async {
-                    let data = listData ?? []
-                    completion(.success(data))
+                    let list = ListModel(listData: listData ?? [])
+                    completion(.success(list))
                 }
             } catch {
                 catchFailure(with: .decodingError)
@@ -51,7 +51,7 @@ final class NetworkService: NetworkServiceProtocol {
         }
     }
     
-    func downloadImage(from url: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+    func downloadImage(from url: String, completion: @escaping (Result<ImageModel, NetworkError>) -> ()) {
         guard let url = URL(string: url) else { return catchFailure(with: .invalidURL) }
         
         var request = URLRequest(url: url)
@@ -67,7 +67,8 @@ final class NetworkService: NetworkServiceProtocol {
             guard let data = data else { return  catchFailure(with: .noData) }
             
             DispatchQueue.main.async {
-                completion(.success(data))
+                let image = ImageModel(imageData: data)
+                completion(.success(image))
             }
         }
         .resume()

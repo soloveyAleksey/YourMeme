@@ -16,6 +16,7 @@ final class MainViewController: UIViewController {
     
     let contentView = MainView()
     var presenter: MainPresenter!
+    var viewControllerFactory: ViewControllerFactoryProtocol = ViewControllerFactory()
     
     private var selectedFont: String?
     
@@ -68,7 +69,7 @@ final class MainViewController: UIViewController {
     
     // MARK: - @objc methods
     @objc private func clearButtonAction() {
-        contentView.memeImage.image = UIImage(named: "jdun")
+        contentView.memeImage.image = UIImage(named: "Zhdun")
         contentView.activityIndicator.stopAnimating()
         contentView.topTF.text = nil
         contentView.bottomTF.text = nil
@@ -76,7 +77,7 @@ final class MainViewController: UIViewController {
     }
     
     @objc private func addButtonAction() {
-        let controller = ViewControllerBuilder.createListScreen()
+        let controller = viewControllerFactory.createListScreen()
         navigationController?.pushViewController(controller, animated: true)
         
         controller.completion = { [weak self] meme in
@@ -89,6 +90,15 @@ final class MainViewController: UIViewController {
     }
     
     @objc func generateButtonAction() {
+        guard let topText = contentView.topTF.text,
+              let bottomText = contentView.bottomTF.text,
+              let fontText = contentView.fontTF.text,
+              topText != "" || bottomText != "",
+              fontText != ""
+        else {
+            presentGenerateAlert()
+            return
+        }
         presenter.generatingImage()
     }
 }
@@ -105,8 +115,7 @@ extension MainViewController: MainViewProtocol {
     }
      
     func showAlert(with error: NetworkError) {
-        let alert = AlertController.showAlert(withError: error)
-        present(alert, animated: true)
+        presentAlert(withError: error)
     }
     
     func setupImage(from data: ImageModel) {
@@ -127,15 +136,15 @@ extension MainViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return presenter.arrayFont.count
+        return presenter.arrayFonts.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return presenter.arrayFont[row]
+        return presenter.arrayFonts[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedFont = presenter.arrayFont[row]
+        selectedFont = presenter.arrayFonts[row]
         contentView.fontTF.text = selectedFont
     }
 }

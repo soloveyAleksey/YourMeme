@@ -1,12 +1,17 @@
 //
-//  ViewControllerBuilder.swift
+//  ViewControllerFactory.swift
 //  YourMeme
 
 import Foundation
 
-final class ViewControllerBuilder {
+protocol ViewControllerFactoryProtocol {
+    func createMainScreen() -> MainViewController
+    func createListScreen() -> ListImagesViewController
+}
+
+final class ViewControllerFactory: ViewControllerFactoryProtocol {
     
-    static func createMainScreen() -> MainViewController {
+    func createMainScreen() -> MainViewController {
         let networkService = NetworkService()
         let view = MainViewController()
         let presenter = MainPresenter(view: view, networkService: networkService)
@@ -15,7 +20,7 @@ final class ViewControllerBuilder {
         return view
     }
     
-    static func createListScreen() -> ListImagesViewController {
+    func createListScreen() -> ListImagesViewController {
         let networkService = NetworkService()
         let view = ListImagesViewController()
         let presenter = ListPresenter(view: view, networkService: networkService)

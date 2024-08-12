@@ -5,10 +5,10 @@
 import Foundation
 
 protocol MainPresenterProtocol: AnyObject {
-    var arrayFont: [String] { get set }
-    var topUrl: String? { get set }
-    var bottomUrl: String? { get set }
-    var fontUrl: String? { get set }
+    var arrayFonts: [String] { get }
+    var topUrl: String? { get }
+    var bottomUrl: String? { get }
+    var fontUrl: String? { get }
     func generatingImage()
 }
 
@@ -16,12 +16,11 @@ final class MainPresenter: MainPresenterProtocol {
     
     weak var view: MainViewProtocol?
     private let networkService: NetworkServiceProtocol
-    private let urlFonts = "https://ronreiter-meme-generator.p.rapidapi.com/fonts"
     
     var topUrl: String?
     var bottomUrl: String?
     var fontUrl: String?
-    var arrayFont: [String] = []
+    var arrayFonts: [String] = []
     
     var currentMeme = "" {
         didSet {
@@ -32,35 +31,36 @@ final class MainPresenter: MainPresenterProtocol {
     init(view: MainViewProtocol, networkService: NetworkServiceProtocol) {
         self.view = view
         self.networkService = networkService
-        
-        getListFonts(from: urlFonts) { [weak self] list in
-            self?.arrayFont = list.fonts
-        }
-    }
 
-    private func getListFonts(from url: String, completion: @escaping (FontListModel) -> ()) {
+        getListFonts()
+    }
+    
+    private func getListFonts() {
+        view?.startActivityIndicator()
+        
+        let urlFonts = "https://ronreiter-meme-generator.p.rapidapi.com/fonts"
         networkService.downloadList(from: urlFonts) { [weak self] result in
+            guard let self else { return }
             
             switch result {
-            case .success(let data):
-                let list = FontListModel(data: data)
-                completion(list)
+            case .success(let list):
+                arrayFonts = list.listData
+                view?.stopActivityIndicator()
             case .failure(let error):
-                self?.view?.showAlert(with: error)
+                view?.showAlert(with: error)
             }
         }
     }
     
     private func setupImage() {
-        let urlImage = "https://ronreiter-meme-generator.p.rapidapi.com/meme?meme=\(currentMeme)&top=%20&bottom=%20"
         view?.startActivityIndicator()
         
+        let urlImage = "https://ronreiter-meme-generator.p.rapidapi.com/meme?meme=\(currentMeme)&top=%20&bottom=%20"
         networkService.downloadImage(from: urlImage) { [weak self] result in
             guard let self else { return }
             
             switch result {
-            case .success(let data):
-                let image = ImageModel(data: data)
+            case .success(let image):
                 view?.setupImage(from: image)
                 view?.stopActivityIndicator()
             case .failure(let error):
@@ -78,8 +78,7 @@ final class MainPresenter: MainPresenterProtocol {
             guard let self else { return }
             
             switch result {
-            case .success(let data):
-                let image = ImageModel(data: data)
+            case .success(let image):
                 view?.setupImage(from: image)
                 view?.stopActivityIndicator()
             case .failure(let error):

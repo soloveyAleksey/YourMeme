@@ -14,10 +14,10 @@ protocol ListImageViewProtocol: AnyObject {
 final class ListImagesViewController: UIViewController {
     
     private let cellID = "NameImagesCell"
+    private let tableView = UITableView()
     private let searchController = UISearchController(searchResultsController: nil)
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    private var filteredMemes = [String]()
     private var isFiltering: Bool { searchController.isActive && !isSearchBarEmpty }
     private var isSearchBarEmpty: Bool { searchController.searchBar.text?.isEmpty ?? true }
     
@@ -30,19 +30,11 @@ final class ListImagesViewController: UIViewController {
         }
     }
     
-    private lazy var tableView: UITableView = {
-        $0.rowHeight = 50
-        $0.separatorInset.right = 16
-        $0.dataSource = self
-        $0.delegate = self
-        $0.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
-        return $0
-    }(UITableView())
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
+        configureTableView()
         setNavigationBar()
     }
     
@@ -56,19 +48,20 @@ final class ListImagesViewController: UIViewController {
         activityIndicator.center = tableView.center
     }
     
+    private func configureTableView() {
+        tableView.rowHeight = 50
+        tableView.separatorInset.right = 16
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+    }
+    
     private func setNavigationBar() {
         title = "List of Images"
         
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
-    }
-    
-    private func filterContentForSearchText(_ searchText: String) {
-        filteredMemes = presenter.arrayMemes.filter { (memes: String) -> Bool in
-        return memes.lowercased().contains(searchText.lowercased())
-        }
-      tableView.reloadData()
     }
     
     private func getCurrentMemsAndBack() {
@@ -91,22 +84,21 @@ extension ListImagesViewController: ListImageViewProtocol {
     }
     
     func showAlert(with error: NetworkError) {
-        let alert = AlertController.showAlert(withError: error)
-        present(alert, animated: true)
+        presentAlert(withError: error)
     }
 }
 
 // MARK: - UITableView Data Source
 extension ListImagesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isFiltering ? filteredMemes.count : presenter.arrayMemes.count
+        return isFiltering ? presenter.filteredMemes.count : presenter.arrayMemes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         
         var contentMems: String
-        contentMems = isFiltering ? filteredMemes[indexPath.row] : presenter.arrayMemes[indexPath.row]
+        contentMems = isFiltering ? presenter.filteredMemes[indexPath.row] : presenter.arrayMemes[indexPath.row]
         
         var content = cell.defaultContentConfiguration()
         content.text = contentMems
@@ -122,7 +114,7 @@ extension ListImagesViewController: UITableViewDelegate {
         var memes = ""
         
         if let indexPath = tableView.indexPathForSelectedRow {
-            memes = isFiltering ? filteredMemes[indexPath.row] : presenter.arrayMemes[indexPath.row]
+            memes = isFiltering ? presenter.filteredMemes[indexPath.row] : presenter.arrayMemes[indexPath.row]
         }
         self.currentMeme = memes
     }
@@ -132,6 +124,6 @@ extension ListImagesViewController: UITableViewDelegate {
 extension ListImagesViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
-        filterContentForSearchText(text)
+        presenter.filterContentForSearchText(text)
     }
 }

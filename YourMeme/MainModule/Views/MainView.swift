@@ -7,10 +7,10 @@ import UIKit
 final class MainView: UIView {
     
     let activityIndicator = UIActivityIndicatorView(style: .large)
-    let memeImage = UIImageView(image: UIImage(named: "jdun"))
+    let memeImage = UIImageView(image: UIImage(named: "Zhdun"))
     let topTF = UITextField(placeholder: "Top text")
     let bottomTF = UITextField(placeholder: "Bottom text")
-    let fontTF = UITextField(placeholder: "Select font", textAlignment: .center)
+    let fontTF = UITextField(placeholder: "Select font")
     let generateButton = UIButton(title: "Generate")
     
     private lazy var vStack = UIStackView(
@@ -36,7 +36,7 @@ final class MainView: UIView {
     // MARK: - Private methods
     private func setDefaultImage() {
         if memeImage.image == nil {
-            memeImage.image = UIImage(named: "jdun")
+            memeImage.image = UIImage(named: "Zhdun")
         }
     }
     
@@ -68,6 +68,7 @@ private extension MainView {
     func setConstraints() {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         memeImage.translatesAutoresizingMaskIntoConstraints = false
+        fontTF.translatesAutoresizingMaskIntoConstraints = false
         vStack.translatesAutoresizingMaskIntoConstraints = false
         generateButton.translatesAutoresizingMaskIntoConstraints = false
         

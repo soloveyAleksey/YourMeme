@@ -15,7 +15,7 @@ enum NetworkError: Error, CustomStringConvertible {
         case .invalidURL:
             return "Invalid url request"
         case .receivedError:
-            return "Received Error"
+            return "An error was received during a network request"
         case .noData:
             return "Can't fetch data"
         case .decodingError:
