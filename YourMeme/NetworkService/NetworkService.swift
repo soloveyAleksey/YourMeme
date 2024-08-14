@@ -21,7 +21,6 @@ final class NetworkService: NetworkServiceProtocol {
         guard let url = URL(string: url) else { return catchFailure(with: .invalidURL) }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
         
         session.dataTask(with: request) { data, _, error in
@@ -55,7 +54,6 @@ final class NetworkService: NetworkServiceProtocol {
         guard let url = URL(string: url) else { return catchFailure(with: .invalidURL) }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
         
         session.dataTask(with: request) { data, _, error in

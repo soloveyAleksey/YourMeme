@@ -18,7 +18,7 @@ extension UIViewController {
         self.present(alertController, animated: true)
     }
     
-    func presentAlert(withError message: NetworkError) {
+    func presentAlert(withError message: String) {
         let alertController = UIAlertController(
             title: "Received Error!",
             message: message.description,

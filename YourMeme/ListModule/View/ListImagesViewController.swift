@@ -8,7 +8,7 @@ protocol ListImageViewProtocol: AnyObject {
     func startActivityIndicator()
     func stopActivityIndicator()
     func updateView()
-    func showAlert(with error: NetworkError)
+    func showAlert(with error: String)
 }
 
 final class ListImagesViewController: UIViewController {
@@ -20,7 +20,7 @@ final class ListImagesViewController: UIViewController {
     
     private var isFiltering: Bool { searchController.isActive && !isSearchBarEmpty }
     private var isSearchBarEmpty: Bool { searchController.searchBar.text?.isEmpty ?? true }
-    
+
     var presenter: ListPresenterProtocol!
     var completion: ((String) ->())?
     var currentMeme = "" {
@@ -71,6 +71,7 @@ final class ListImagesViewController: UIViewController {
 
 // MARK: - ListImageView Protocol
 extension ListImagesViewController: ListImageViewProtocol {
+    
     func startActivityIndicator() {
         activityIndicator.startAnimating()
     }
@@ -83,7 +84,7 @@ extension ListImagesViewController: ListImageViewProtocol {
         tableView.reloadData()
     }
     
-    func showAlert(with error: NetworkError) {
+    func showAlert(with error: String) {
         presentAlert(withError: error)
     }
 }

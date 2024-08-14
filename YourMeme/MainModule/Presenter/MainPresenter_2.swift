@@ -1,22 +1,15 @@
 //
-//  MainPresenter.swift
+//  MainPresenter_2.swift
 //  YourMeme
 
 import Foundation
 
-protocol MainPresenterProtocol: AnyObject {
-    var arrayFonts: [String] { get }
-    var topUrl: String? { get set }
-    var bottomUrl: String? { get set }
-    var fontUrl: String? { get set }
-    var currentMeme: String { get set }
-    func generatingImage()
-}
+// MARK: A Presenter using NetworkService_2 async/await
 
-final class MainPresenter: MainPresenterProtocol {
+final class MainPresenter_2: MainPresenterProtocol {
     
     weak var view: MainViewProtocol?
-    private let networkService: NetworkServiceProtocol
+    private let networkService: NetworkServiceProtocol_2
     
     var topUrl: String?
     var bottomUrl: String?
@@ -29,10 +22,10 @@ final class MainPresenter: MainPresenterProtocol {
         }
     }
     
-    init(view: MainViewProtocol, networkService: NetworkServiceProtocol) {
+    init(view: MainViewProtocol, networkService: NetworkServiceProtocol_2) {
         self.view = view
         self.networkService = networkService
-        
+
         getListFonts()
     }
     
@@ -41,15 +34,14 @@ final class MainPresenter: MainPresenterProtocol {
         view?.startActivityIndicator()
         
         let urlFonts = "https://ronreiter-meme-generator.p.rapidapi.com/fonts"
-        networkService.downloadList(from: urlFonts) { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case .success(let list):
-                arrayFonts = list.listData
+        
+        Task { @MainActor in
+            do {
+                let listFonts = try await networkService.downloadList(from: urlFonts)
+                arrayFonts = listFonts.listData
                 view?.stopActivityIndicator()
-            case .failure(let error):
-                view?.showAlert(with: error.description)
+            } catch {
+                view?.showAlert(with: error.localizedDescription)
             }
         }
     }
@@ -57,15 +49,13 @@ final class MainPresenter: MainPresenterProtocol {
     private func getImage(_ url: String) {
         view?.startActivityIndicator()
         
-        networkService.downloadImage(from: url) { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case .success(let imageData):
+        Task { @MainActor in
+            do {
+                let imageData = try await networkService.downloadImage(from: url)
                 view?.setupImage(from: imageData)
                 view?.stopActivityIndicator()
-            case .failure(let error):
-                view?.showAlert(with: error.description)
+            } catch {
+                view?.showAlert(with: error.localizedDescription)
             }
         }
     }

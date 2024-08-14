@@ -4,7 +4,7 @@
 
 import Foundation
 
-protocol ViewControllerFactoryProtocol {
+protocol ViewControllerFactoryProtocol: AnyObject {
     func createMainScreen() -> MainViewController
     func createListScreen() -> ListImagesViewController
 }
@@ -12,18 +12,18 @@ protocol ViewControllerFactoryProtocol {
 final class ViewControllerFactory: ViewControllerFactoryProtocol {
     
     func createMainScreen() -> MainViewController {
-        let networkService = NetworkService()
+        let networkService = NetworkService_2()
         let view = MainViewController()
-        let presenter = MainPresenter(view: view, networkService: networkService)
+        let presenter = MainPresenter_2(view: view, networkService: networkService)
         view.presenter = presenter
         
         return view
     }
     
     func createListScreen() -> ListImagesViewController {
-        let networkService = NetworkService()
+        let networkService = NetworkService_2()
         let view = ListImagesViewController()
-        let presenter = ListPresenter(view: view, networkService: networkService)
+        let presenter = ListPresenter_2(view: view, networkService: networkService)
         view.presenter = presenter
         
         return view

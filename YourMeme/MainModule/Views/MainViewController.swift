@@ -7,7 +7,7 @@ import UIKit
 protocol MainViewProtocol: AnyObject {
     func startActivityIndicator()
     func stopActivityIndicator()
-    func showAlert(with error: NetworkError)
+    func showAlert(with error: String)
     func setupImage(from data: ImageModel)
     func editText()
 }
@@ -15,7 +15,7 @@ protocol MainViewProtocol: AnyObject {
 final class MainViewController: UIViewController {
     
     let contentView = MainView()
-    var presenter: MainPresenter!
+    var presenter: MainPresenterProtocol!
     var viewControllerFactory: ViewControllerFactoryProtocol = ViewControllerFactory()
     
     private var selectedFont: String?
@@ -114,7 +114,7 @@ extension MainViewController: MainViewProtocol {
         contentView.activityIndicator.stopAnimating()
     }
      
-    func showAlert(with error: NetworkError) {
+    func showAlert(with error: String) {
         presentAlert(withError: error)
     }
     
