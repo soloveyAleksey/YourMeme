@@ -21,6 +21,8 @@
 		427C4E5E2C500BBB00826465 /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427C4E5D2C500BBB00826465 /* ImageModel.swift */; };
 		429EFD9F2C60C71B00E04E90 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 429EFD9E2C60C71B00E04E90 /* .gitignore */; };
 		42A854F42C51018D005203C1 /* ViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A854F32C51018D005203C1 /* ViewControllerFactory.swift */; };
+		42CB0E0E2CC8F1C500A1A0F1 /* ListModuleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CB0E0D2CC8F1C500A1A0F1 /* ListModuleProtocols.swift */; };
+		42CB0E142CC8F3D300A1A0F1 /* MainModuleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CB0E132CC8F3D300A1A0F1 /* MainModuleProtocols.swift */; };
 		42D196542C4FA84A00876D12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D196532C4FA84A00876D12 /* AppDelegate.swift */; };
 		42D196562C4FA84A00876D12 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D196552C4FA84A00876D12 /* SceneDelegate.swift */; };
 		42D196582C4FA84A00876D12 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D196572C4FA84A00876D12 /* MainViewController.swift */; };
@@ -48,6 +50,8 @@
 		427C4E5D2C500BBB00826465 /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
 		429EFD9E2C60C71B00E04E90 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		42A854F32C51018D005203C1 /* ViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerFactory.swift; sourceTree = "<group>"; };
+		42CB0E0D2CC8F1C500A1A0F1 /* ListModuleProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModuleProtocols.swift; sourceTree = "<group>"; };
+		42CB0E132CC8F3D300A1A0F1 /* MainModuleProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModuleProtocols.swift; sourceTree = "<group>"; };
 		42D196502C4FA84A00876D12 /* YourMeme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourMeme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42D196532C4FA84A00876D12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42D196552C4FA84A00876D12 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,10 +116,27 @@
 		42B84CDD2C52F708006D9791 /* MainModule */ = {
 			isa = PBXGroup;
 			children = (
+				42CB0E122CC8F3B400A1A0F1 /* Protocols */,
 				42D1966B2C4FA9F000876D12 /* Views */,
 				420577A02C5B80030056DE44 /* Presenter */,
 			);
 			path = MainModule;
+			sourceTree = "<group>";
+		};
+		42CB0E0C2CC8F19800A1A0F1 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				42CB0E0D2CC8F1C500A1A0F1 /* ListModuleProtocols.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		42CB0E122CC8F3B400A1A0F1 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				42CB0E132CC8F3D300A1A0F1 /* MainModuleProtocols.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		42D196472C4FA84A00876D12 = {
@@ -219,6 +240,7 @@
 		42FEEDC32C544A8A0027E103 /* ListModule */ = {
 			isa = PBXGroup;
 			children = (
+				42CB0E0C2CC8F19800A1A0F1 /* Protocols */,
 				42FEEDC72C544B8B0027E103 /* View */,
 				42FEEDC22C544A720027E103 /* Presenter */,
 			);
@@ -307,6 +329,7 @@
 				42D196582C4FA84A00876D12 /* MainViewController.swift in Sources */,
 				427C4E512C4FC36900826465 /* NetworkError.swift in Sources */,
 				42D1966D2C4FAA0700876D12 /* MainView.swift in Sources */,
+				42CB0E142CC8F3D300A1A0F1 /* MainModuleProtocols.swift in Sources */,
 				42D196542C4FA84A00876D12 /* AppDelegate.swift in Sources */,
 				427C4E5A2C4FD6B200826465 /* UIStackView + Ext.swift in Sources */,
 				427C4E562C4FD51800826465 /* UIImageView + Ext.swift in Sources */,
@@ -315,6 +338,7 @@
 				42FEEDC62C544AD60027E103 /* ListPresenter.swift in Sources */,
 				4228FAC62C6C8F63009BA18A /* NetworkService_2.swift in Sources */,
 				42D196562C4FA84A00876D12 /* SceneDelegate.swift in Sources */,
+				42CB0E0E2CC8F1C500A1A0F1 /* ListModuleProtocols.swift in Sources */,
 				42E3E3E72C5136840011B6F6 /* MainViewController + Ext.swift in Sources */,
 				427C4E542C4FC8EF00826465 /* UITextField + Ext.swift in Sources */,
 				427C4E582C4FD58300826465 /* UIButton + Ext.swift in Sources */,

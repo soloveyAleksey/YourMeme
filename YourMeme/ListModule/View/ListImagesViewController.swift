@@ -4,13 +4,6 @@
 
 import UIKit
 
-protocol ListImageViewProtocol: AnyObject {
-    func startActivityIndicator()
-    func stopActivityIndicator()
-    func updateView()
-    func showAlert(with error: String)
-}
-
 final class ListImagesViewController: UIViewController {
     
     private let cellID = "NameImagesCell"

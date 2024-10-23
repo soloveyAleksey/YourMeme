@@ -4,14 +4,6 @@
 
 import UIKit
 
-protocol MainViewProtocol: AnyObject {
-    func startActivityIndicator()
-    func stopActivityIndicator()
-    func showAlert(with error: String)
-    func setupImage(from data: ImageModel)
-    func editText()
-}
-
 final class MainViewController: UIViewController {
     
     let contentView = MainView()
@@ -90,6 +82,8 @@ final class MainViewController: UIViewController {
     }
     
     @objc func generateButtonAction() {
+        contentView.createButtonAnimation()
+        
         guard let topText = contentView.topTF.text,
               let bottomText = contentView.bottomTF.text,
               let fontText = contentView.fontTF.text,

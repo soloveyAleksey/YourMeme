@@ -4,15 +4,6 @@
 
 import Foundation
 
-protocol MainPresenterProtocol: AnyObject {
-    var arrayFonts: [String] { get }
-    var topUrl: String? { get set }
-    var bottomUrl: String? { get set }
-    var fontUrl: String? { get set }
-    var currentMeme: String { get set }
-    func generatingImage()
-}
-
 final class MainPresenter: MainPresenterProtocol {
     
     weak var view: MainViewProtocol?

@@ -4,12 +4,6 @@
 
 import Foundation
 
-protocol ListPresenterProtocol: AnyObject {
-    var arrayMemes: [String] { get }
-    var filteredMemes: [String] { get }
-    func filterContentForSearchText(_ searchText: String)
-}
-
 final class ListPresenter: ListPresenterProtocol {
     
     weak var view: ListImageViewProtocol?

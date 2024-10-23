@@ -52,6 +52,19 @@ final class MainView: UIView {
     private func addButtonTarget() {
         generateButton.addTarget(nil, action: #selector(MainViewController.generateButtonAction), for: .touchUpInside)
     }
+    
+    // MARK: - Methods
+    func createButtonAnimation() {
+        let bounds = generateButton.bounds
+        
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 10, options: .curveEaseInOut) {
+            
+            self.generateButton.bounds = CGRect(
+                x: bounds.origin.x - 50, y: bounds.origin.y, width: bounds.width + 100, height: bounds.height)
+            
+            self.generateButton.titleLabel?.bounds = CGRect(x: bounds.origin.x - 30, y: bounds.height / 2, width: bounds.width + 60, height: 0)
+        }
+    }
 }
 
 // MARK: - Set up Views
