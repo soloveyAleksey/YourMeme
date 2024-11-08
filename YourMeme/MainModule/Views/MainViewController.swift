@@ -7,12 +7,12 @@ import UIKit
 final class MainViewController: UIViewController {
     
     let contentView = MainView()
-    var presenter: MainPresenterProtocol!
-    var viewControllerFactory: ViewControllerFactoryProtocol = ViewControllerFactory()
+    private let viewControllerFactory: ViewControllerFactoryProtocol = ViewControllerFactory()
     
+    var presenter: MainPresenterProtocol!
     private var selectedFont: String?
     
-    // MARK: - Lifecycle
+    // MARK: - Override methods
     override func loadView() {
         view = contentView
     }
@@ -31,10 +31,15 @@ final class MainViewController: UIViewController {
     
     // MARK: - Private methods
     private func setNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear", style: .done, target: self, action: #selector(clearButtonAction))
-        
+        let logOutImage = UIImage(systemName: "arrow.uturn.backward")
         let plusImage = UIImage(systemName: "plus")
         let shareImage = UIImage(systemName: "square.and.arrow.up")
+        
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(image: logOutImage, style: .done, target: self, action: #selector(logOutButtonAction)),
+            UIBarButtonItem(title: "Clear", style: .done, target: self, action: #selector(clearButtonAction))
+        ]
+        
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(image: plusImage, style: .done, target: self, action: #selector(addButtonAction)),
             UIBarButtonItem(image: shareImage, style: .done, target: self, action: #selector(shareButtonAction))
@@ -68,6 +73,10 @@ final class MainViewController: UIViewController {
         contentView.fontTF.text = nil
     }
     
+    @objc private func logOutButtonAction() {
+        presenter.logOut()
+    }
+    
     @objc private func addButtonAction() {
         let controller = viewControllerFactory.createListScreen()
         navigationController?.pushViewController(controller, animated: true)
@@ -90,7 +99,7 @@ final class MainViewController: UIViewController {
               topText != "" || bottomText != "",
               fontText != ""
         else {
-            presentGenerateAlert()
+            presentAlert(title: .emptyField, .generate)
             return
         }
         presenter.generatingImage()
@@ -109,7 +118,7 @@ extension MainViewController: MainViewProtocol {
     }
      
     func showAlert(with error: String) {
-        presentAlert(withError: error)
+        presentAlert(.error, withError: error)
     }
     
     func setupImage(from data: ImageModel) {
@@ -120,6 +129,10 @@ extension MainViewController: MainViewProtocol {
         presenter.fontUrl = editText(from: contentView.fontTF)
         presenter.topUrl = editText(from: contentView.topTF)
         presenter.bottomUrl = editText(from: contentView.bottomTF)
+    }
+    
+    func dismiss() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

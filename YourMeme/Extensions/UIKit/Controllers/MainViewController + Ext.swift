@@ -30,7 +30,7 @@ extension MainViewController {
         let keyboardIsHidden = contentView.frame.origin.y == 0
         
         if keyboardIsHidden {
-            contentView.frame.origin.y -= keyboardFrame.cgRectValue.height - 180
+            contentView.frame.origin.y -= keyboardFrame.cgRectValue.height - 140
         }
     }
     

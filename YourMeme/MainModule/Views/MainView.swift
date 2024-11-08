@@ -29,6 +29,7 @@ final class MainView: UIView {
         addButtonTarget()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -60,9 +61,16 @@ final class MainView: UIView {
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 10, options: .curveEaseInOut) {
             
             self.generateButton.bounds = CGRect(
-                x: bounds.origin.x - 50, y: bounds.origin.y, width: bounds.width + 100, height: bounds.height)
+                x: bounds.origin.x - 50,
+                y: bounds.origin.y,
+                width: bounds.width + 100,
+                height: bounds.height)
             
-            self.generateButton.titleLabel?.bounds = CGRect(x: bounds.origin.x - 30, y: bounds.height / 2, width: bounds.width + 60, height: 0)
+            self.generateButton.titleLabel?.bounds = CGRect(
+                x: bounds.origin.x - 30,
+                y: bounds.height / 2,
+                width: bounds.width + 60,
+                height: 0)
         }
     }
 }
@@ -79,17 +87,13 @@ private extension MainView {
     }
     
     func setConstraints() {
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        memeImage.translatesAutoresizingMaskIntoConstraints = false
-        fontTF.translatesAutoresizingMaskIntoConstraints = false
-        vStack.translatesAutoresizingMaskIntoConstraints = false
-        generateButton.translatesAutoresizingMaskIntoConstraints = false
+        [activityIndicator, memeImage, fontTF, vStack, generateButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: memeImage.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: memeImage.centerYAnchor),
             
-            memeImage.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            memeImage.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             memeImage.leadingAnchor.constraint(equalTo: leadingAnchor),
             memeImage.trailingAnchor.constraint(equalTo: trailingAnchor),
             memeImage.heightAnchor.constraint(equalToConstant: 400),

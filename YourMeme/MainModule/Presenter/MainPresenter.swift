@@ -5,9 +5,10 @@
 import Foundation
 
 final class MainPresenter: MainPresenterProtocol {
-    
+   
     weak var view: MainViewProtocol?
     private let networkService: NetworkServiceProtocol
+    private let authService: FirebaseServiceProtocol
     
     var topUrl: String?
     var bottomUrl: String?
@@ -20,9 +21,10 @@ final class MainPresenter: MainPresenterProtocol {
         }
     }
     
-    init(view: MainViewProtocol, networkService: NetworkServiceProtocol) {
+    init(view: MainViewProtocol, networkService: NetworkServiceProtocol, authService: FirebaseServiceProtocol) {
         self.view = view
         self.networkService = networkService
+        self.authService = authService
         
         getListFonts()
     }
@@ -72,5 +74,13 @@ final class MainPresenter: MainPresenterProtocol {
         
         let urlCreateMeme = "https://ronreiter-meme-generator.p.rapidapi.com/meme?font=\(fontUrl ?? "")&font_size=50&meme=\(currentMeme)&top=\(topUrl ?? "")&bottom=\(bottomUrl ?? "")"
         getImage(urlCreateMeme)
+    }
+    
+    func logOut() {
+        do {
+            if try authService.signOut() { view?.dismiss() }
+        } catch {
+            view?.showAlert(with: error.localizedDescription)
+        }
     }
 }

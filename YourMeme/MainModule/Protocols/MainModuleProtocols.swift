@@ -11,6 +11,7 @@ protocol MainViewProtocol: AnyObject {
     func showAlert(with error: String)
     func setupImage(from data: ImageModel)
     func editText()
+    func dismiss()
 }
 
 // MARK: - Presenter
@@ -21,4 +22,5 @@ protocol MainPresenterProtocol: AnyObject {
     var fontUrl: String? { get set }
     var currentMeme: String { get set }
     func generatingImage()
+    func logOut()
 }

@@ -78,7 +78,7 @@ extension ListImagesViewController: ListImageViewProtocol {
     }
     
     func showAlert(with error: String) {
-        presentAlert(withError: error)
+        presentAlert(.error, withError: error)
     }
 }
 
